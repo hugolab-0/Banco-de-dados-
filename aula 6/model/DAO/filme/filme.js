@@ -16,6 +16,7 @@ const knex = require('knex')
 // Import do arquivo de configuração para conexão com o DB Mysql
 const knexConfig = require('../../database_config_knex/knexFile.js')
 
+// Vai criar a conexão com o DB Mysaql
 const knexConex = knex(knexConfig.development)
 
 // inserir dados na tabla de filmes 
@@ -40,6 +41,9 @@ const insertFilme = async function(filme){
 		    ´${filme.valor}´,
             ´${filme.capa}´
             );`
+
+            //  Vai executar o scriptSQL no banco de dados
+            let result = knexConex.rank(sql)
 
 }
 
