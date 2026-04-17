@@ -45,6 +45,14 @@ const insertFilme = async function(filme){
             //  Vai executar o scriptSQL no banco de dados
             let result = knexConex.rank(sql)
 
+
+            if(result) {
+                return true 
+            }
+            else {
+                return false
+            }
+
 }
 
 // função para atualizar um filme existente na tabela
