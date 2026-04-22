@@ -1,7 +1,3 @@
-/**
- * Objetivo
- **/
-
 // importe das dependencias para criar a API 
 const express       = require('express')
 const cors          = require('cors')
@@ -32,9 +28,11 @@ app.post('/v1/senai/locadora/filme', bodyParserJSON, async function(req, res){
 
     // recebe o conteudo dentro do body da requisição
     let dados = req.body
+ 
+    let contentType = req.headers['content-type']
 
-    let result = await controllerFilme.inserirNovoFilme(dados)
- console.log(result)
+    let result = await controllerFilme.inserirNovoFilme(dados, contentType)
+
         res.status(result.status_code)
        
         res.json(result)
