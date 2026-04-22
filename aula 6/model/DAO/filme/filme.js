@@ -43,7 +43,7 @@ const insertFilme = async function(filme){
             );`
 
             //  Vai executar o scriptSQL no banco de dados
-            let result = knexConex.rank(sql)
+            let result = knexConex.raw(sql)
 
 
             if(result) {
