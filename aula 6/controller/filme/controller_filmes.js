@@ -63,6 +63,31 @@ const atualizarFilme = async function() {
 
 // função para retornar todos os filmes
 const listaFilme = async function() {
+    // fazendo um clone do objeto JSON para manipular a sua estrutura local sem 
+    // modificar a estrututra original
+    let message = JSON.parse(JSON.stringify(config_message))
+
+    try {
+        let result = await filmeDAO.selectAllFilme()
+
+        if(result) {
+            if(result.length > 0) {
+                message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
+                message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
+                message.DEFAULT_MESSAGE.response.result = result
+
+                return message.DEFAULT_MESSAGE
+
+            }else {
+                return message.ERROR_NOT_FOUND
+            }
+
+        }else {
+            return message.ERROR_INTERNAL_SERVER_MODEL
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
     
 }
 

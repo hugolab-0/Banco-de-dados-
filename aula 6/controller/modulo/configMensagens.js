@@ -48,6 +48,17 @@ const ERROR_INTERNAL_SERVER_CONTROLLER = {
     message:'Não foi possivel processar a requisição por conta de erro no controle de dados.'
 }
 
+const ERROR_NOT_FOUND = {   
+    status: false, 
+    status_code: 404, 
+    message:'Não foi possivel encontrar nenhum dado para retorno.'
+}
+
+const SUCESS_RESPONSE = {
+    status: true,
+    status_code: 200
+}
+
 
 // exporta os objetos para serem usados em outros arquivos do projeto
 module.exports = {
@@ -56,5 +67,8 @@ module.exports = {
     DEFAULT_MESSAGE,
     ERROR_INTERNAL_SERVER_MODEL,
     ERROR_CONTENT_TYPE,
-    ERROR_INTERNAL_SERVER_CONTROLLER
+    ERROR_INTERNAL_SERVER_CONTROLLER,
+    ERROR_NOT_FOUND,
+    SUCESS_RESPONSE
+
 }

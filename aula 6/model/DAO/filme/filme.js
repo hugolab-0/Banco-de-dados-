@@ -46,7 +46,7 @@ const insertFilme = async function(filme){
             );`
 
             //  Vai executar o scriptSQL no banco de dados
-            let result = knexConex.raw(sql)
+            let result = await knexConex.raw(sql)
 
 
             if(result) {
@@ -75,6 +75,24 @@ const selectAllFilme = async function() {
 
 // função deve selecionar um filme especifico filtrando pelo id
 const selectByIdFilme = async function(id){
+    try {
+        // script para retornar todos os filmes
+        let sql = 'select * from tbl_filme order by id desc'
+
+        // executa no banco de dados o script SQL para retornar os filmes
+        let result = await knexConex.raw (aql)
+        
+        // validação para varificar se o retorno do DB é umm array
+        // se o scriptSQL não for array retorna dalso
+        if(Array.isArray(result )) {
+            return result
+        }
+        else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
 
 }
 
