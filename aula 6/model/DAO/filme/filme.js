@@ -1,104 +1,84 @@
-/********* 
- * Objetivo: Arquivo responsavel pelo crud no Banco de dados MySQL na tabela filme
- * Data>: 15/04/2026
- * 
- * Autor: Hugo
- * Versão: 1.0
-***********/
-
-// criar uma função para cada função do crud
-// async -> permite que uma função aguarde a outra ser processada antes dela
-
-
-// Import da biblioteca para gerenciar o banco de dados Mysql no Node.js
+// Import da biblioteca para gerenciar o banco de dados MySQL no node.JS
 const knex = require('knex')
 
-// Import do arquivo de configuração para conexão com o DB Mysql
+// Import do arquivo de configuração para conexão com o BD MySQL
 const knexConfig = require('../../database_config_knex/knexFile.js')
 
-// Vai criar a conexão com o DB Mysaql
+// Criar a conexão com o BD MySQL utilizando o knex e as configurações do arquivo knexFile.js
 const knexConex = knex(knexConfig.development)
 
-// inserir dados na tabla de filmes 
+// Função para inserir dados na tabela de filme
 const insertFilme = async function(filme){
-
     try {
         
     
-    let sql = `
-    insert into  tbl_filme (
-						nome,
-						data_lancamento,
-                        duracao,
-                        sinopse,
-                        avaliacao,
-                        valor,
-                        capa
-                        )
-    values (
-		    ´${filme.nome}´,
-		    ´${filme.data_lancamento}´,
-            ´${filme.duracao}´,
-            ´${filme.sinopse}´,
-            if(´${filme.avaliacao}´ = '', null, ´${filme.avaliacao}´),
-		    ´${filme.valor}´,
-            ´${filme.capa}´
-            );`
+        let sql = `insert into tbl_filme (
+                            nome, 
+                            data_lancamento, 
+                            duracao, 
+                            sinopse, 
+                            avaliacao, 
+                            valor, 
+                            capa
+                            )
+                    values (
+                            '${filme.nome}', 
+                            '${filme.data_lancamento}', 
+                            '${filme.duracao}', 
+                            '${filme.sinopse}', 
+                            if('${filme.avaliacao}' = '', null, '${filme.avaliacao}'), 
+                            '${filme.valor}', 
+                            '${filme.capa}'
+                            );`
 
-            //  Vai executar o scriptSQL no banco de dados
-            let result = await knexConex.raw(sql)
+        // Executar o script SQL no banco de dados
+        let result = await knexConex.raw(sql)       // await = esperar o resultado do banco de dados para depois continuar a execução do código
 
-
-            if(result) {
-                return true 
-            }
-            else {
-                return false
-            }
+        if(result)
+            return true
+        else
+            return false
 
     } catch (error) {
+        console.log(error)
         return false
     }
-    
+}
+
+// Função para atualizar um filme existente na tabela
+const updateFilme = async function(filme){
 
 }
 
-// função para atualizar um filme existente na tabela
-const updateFilme = async function(filme) {
-    
-}
-
-// fução par aretornar todos os dados da tabela de filme
-const selectAllFilme = async function() {
-    
-}
-
-// função deve selecionar um filme especifico filtrando pelo id
-const selectByIdFilme = async function(id){
+// Função para retornar todos os dados da tabela de filme
+const selectAllFilme = async function(){
     try {
-        // script para retornar todos os filmes
-        let sql = 'select * from tbl_filme order by id desc'
+        // Script para retornar todos os filmes
+        let sql = `select * from tbl_filme order by id desc` //desc - ordenação decrescente (do maior para o menor)
 
-        // executa no banco de dados o script SQL para retornar os filmes
-        let result = await knexConex.raw (aql)
+        // Executa no banco de dados o script SL para retornar os filmes
+        let result = await knexConex.raw(sql)
         
-        // validação para varificar se o retorno do DB é umm array
-        // se o scriptSQL não for array retorna dalso
-        if(Array.isArray(result )) {
-            return result
-        }
-        else{
+        // Validação para verificar se o retorno no BD é um array
+        // Se o scriptSQL der erro, o banco não devolve o array
+        if(Array.isArray(result)){
+            return result[0]
+        }else{
             return false
         }
     } catch (error) {
         return false
     }
+}
+
+// Função para retornar os dados do filme filtrando pelo ID
+const selectByIdFilme = async function(id){
 
 }
 
-// função para deletar o filme selecionado
-const deleteFilme = async function(id) {
-    
+// Função para excluir um filme pelo ID
+const deleteFilme = async function(id){
+
 }
 
 module.exports = {

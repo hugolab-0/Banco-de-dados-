@@ -30,16 +30,25 @@ app.post('/v1/senai/locadora/filme', bodyParserJSON, async function(req, res){
     let dados = req.body
  
     let contentType = req.headers['content-type']
-
     let result = await controllerFilme.inserirNovoFilme(dados, contentType)
 
         res.status(result.status_code)
-       
         res.json(result)
 })
 
 app.get('/v1/senai/locadora/lista/filme', async function(req, res) {
-    let result = await controllerFilme.listarFilme()
+    let result = await controllerFilme.listaFilme()
+
+    res.status(result.status_code)
+    res.json(result)
+    
+})
+
+app.get('/v1/senai/locadora/filme/:id', async function(req, res) {
+
+    let id = req.params.id
+    
+    let result = await controllerFilme.buscarFilme(id)
 
     res.status(result.status_code)
     res.json(result)

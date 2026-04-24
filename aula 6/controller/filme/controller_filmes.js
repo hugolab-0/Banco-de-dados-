@@ -12,6 +12,7 @@ const config_message = require('../modulo/configMensagens.js')
 
 // improte do arquivo dao para fazer o crud do filme no banco
 const filmeDAO = require('../../model/DAO/filme/filme.js')
+const { json } = require('body-parser')
 
 // Função para inserir um novo filme
 const inserirNovoFilme = async function(filme, contentType) {
@@ -30,8 +31,7 @@ const inserirNovoFilme = async function(filme, contentType) {
 
     if(validar) {
         return validar
-    }
-    else{ 
+    }else{ 
         // encaminha os dados do filme para o dao
         let result = await filmeDAO.insertFilme(filme)
 
@@ -74,6 +74,7 @@ const listaFilme = async function() {
             if(result.length > 0) {
                 message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
                 message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
+                message.DEFAULT_MESSAGE.response.result = result.length
                 message.DEFAULT_MESSAGE.response.result = result
 
                 return message.DEFAULT_MESSAGE
@@ -93,6 +94,34 @@ const listaFilme = async function() {
 
 // função para buscar um filme pelo ID
 const buscarFilme = async function() {
+
+    let message = JSON.parse(JSON.stringify(config_message))
+
+    try {
+        if(id == '' || id == null || id == undefined || isNaN(id)) {
+            message.ERROR_BAD_REQUEST.field = '[ID] INVALIDO'
+            return message.ERROR_BAD_REQUEST //400
+        }else{
+            let result = await filmeDAO.selectByIdFilme(id)
+
+            if(result) {
+                if(result.length > 0) {
+                    message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
+                    message.DEFAULT_MESSAGE.status_code = message.SUCESS_RESPONSE.status_code
+                    message.DEFAULT_MESSAGE.response.filme = result
+
+                    return message.DEFAULT_MESSAGE
+                }else {
+                    return message.ERROR_NOT_FOUND
+                }
+            }else {
+                return message.ERROR_INTERNAL_SERVER_MODEL
+            }
+        }
+        
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
     
 }
 
@@ -139,5 +168,8 @@ const validarDados = async function(filme) {
 }
 
 module.exports = {
-    inserirNovoFilme
+    inserirNovoFilme,
+    buscarFilme,
+    listaFilme,
+    atualizarFilme
 }

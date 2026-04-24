@@ -13,19 +13,15 @@ create table tbl_filme(
     duracao time not null,
     sinopse text not null,
     avaliacao decimal(3,2) default null,
-    valor decimal (4,4) not null default 0,
+    valor decimal (5,2) not null default 0,
     capa varchar(255)
 );
+
+desc tbl_filme;
 # mostrar tabela
 show tables;
 
-# inserir dados
-insert into  tbl_filme (nome, data_lancamento, duracao, sinopse, avaliacao, valor, capa)
-values('Pecadores',
-		'2025-04-03',
-        '2:12:00',
-        'Dois irmãos gêmeos tentam deixar suas vidas problemáticas para trás e retornam à sua cidade natal para recomeçar.
-         Lá, eles descobrem que um mal ainda maior está à espreita para recebê-los de volta.',
-        '3',
-		 '45.30',
-         'https://upload.wikimedia.org/wikipedia/pt/thumb/d/de/Pecadores.webp/250px-Pecadores.webp.png')
+select * from tbl_filme;
+
+
+
