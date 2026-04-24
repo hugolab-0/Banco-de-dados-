@@ -70,6 +70,8 @@ const listaFilme = async function() {
     try {
         let result = await filmeDAO.selectAllFilme()
 
+        
+
         if(result) {
             if(result.length > 0) {
                 message.DEFAULT_MESSAGE.status = message.SUCESS_RESPONSE.status
@@ -103,6 +105,7 @@ const buscarFilme = async function() {
             return message.ERROR_BAD_REQUEST //400
         }else{
             let result = await filmeDAO.selectByIdFilme(id)
+            console.log(result)
 
             if(result) {
                 if(result.length > 0) {

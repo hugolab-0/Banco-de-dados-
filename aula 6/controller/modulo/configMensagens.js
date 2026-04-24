@@ -13,7 +13,7 @@ const DEFAULT_MESSAGE = {
 
     status: Boolean,      // status da resposta (true ou false)
     status_code: Number,  // código HTTP da resposta (200, 201, 400, etc.)
-    Response: {}          // objeto que pode armazenar dados de retorno
+    response: {}          // objeto que pode armazenar dados de retorno
 }
 
 // mensagem de erro da api (quando a requisição está inválida)
