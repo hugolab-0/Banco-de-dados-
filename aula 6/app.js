@@ -1,62 +1,145 @@
-// importe das dependencias para criar a API 
+// ======================== IMPORTS ========================
+
+// Importa o framework Express, utilizado para criar a API (rotas, servidor, etc.)
 const express       = require('express')
+
+// Importa o CORS, que permite controlar quais origens podem acessar a API
 const cors          = require('cors')
+
+// Importa o body-parser, utilizado para interpretar dados enviados no corpo da requisição (body)
 const bodyParser    = require('body-parser')
 
 
-// import da controller
+// ======================== CONTROLLER ========================
+
+// Importa a controller de filmes, que contém as regras de negócio (validação, lógica, etc.)
 const controllerFilme = require('./controller/filme/controller_filmes.js')
 
-// criando um projeto para manipular dados do body da api em formato JSON
+
+// ======================== CONFIG BODY ========================
+
+// Cria um middleware para permitir que a API receba e interprete JSON no body das requisições
 const bodyParserJSON = bodyParser.json()
 
-// criando um objeto para manipular o express
+
+// ======================== APP ========================
+
+// Cria a instância do Express (objeto principal da API)
 const app =  express()
 
-// conjunto de permissões a serem aplicas do CORs na API 
+
+// ======================== CONFIG CORS ========================
+
+// Define as regras de acesso da API (quem pode acessar e como)
 const corsOptions = {
-    origin: ['*'], //A origem da requisição, podendo ser o IP ou o "*"(todos)
-    methods: 'GET, POST, PUT, DELETE, OPTIONS', //Os methods são os verbos(metodos) que serao liberados na API (GET, POST, PUT e DELETE)
-    allowedHeaders: ['content-type', 'autorization'] //AllowedHeader são permissões de cabeçalho do cors
+    origin: ['*'], // Permite acesso de qualquer origem ("*" = todos)
+    methods: 'GET, POST, PUT, DELETE, OPTIONS', // Define quais métodos HTTP são permitidos
+    allowedHeaders: ['content-type', 'autorization'] // Define quais headers são permitidos (OBS: "authorization" está com erro de digitação)
 }
-// decretado o que o app ira usar e da onde ele vai tirar as configurações
-// ele serve para configurações da API usando o CORS
+
+// Aplica as configurações de CORS na aplicação
 app.use(cors(corsOptions))
 
-// ENDPOINTS
+
+// ======================== ENDPOINT: INSERT ========================
+
+// Endpoint para cadastrar (inserir) um novo filme
 app.post('/v1/senai/locadora/filme', bodyParserJSON, async function(req, res){
 
-    // recebe o conteudo dentro do body da requisição
+    // Recebe os dados enviados no body da requisição (JSON)
     let dados = req.body
  
+    // Captura o content-type do header da requisição
     let contentType = req.headers['content-type']
+
+    // Envia os dados para a controller realizar validação e inserção
     let result = await controllerFilme.inserirNovoFilme(dados, contentType)
 
-        res.status(result.status_code)
-        res.json(result)
+    // Define o status HTTP da resposta
+    res.status(result.status_code)
+
+    // Retorna o resultado em formato JSON
+    res.json(result)
 })
 
+
+// ======================== ENDPOINT: SELECT ALL ========================
+
+// Endpoint para listar todos os filmes
 app.get('/v1/senai/locadora/lista/filme', async function(req, res) {
+
+    // Chama a controller para buscar todos os filmes
     let result = await controllerFilme.listaFilme()
 
+    // Define status HTTP
     res.status(result.status_code)
+
+    // Retorna os dados
     res.json(result)
     
 })
 
+
+// ======================== ENDPOINT: SELECT BY ID ========================
+
+// Endpoint para buscar um filme específico pelo ID
 app.get('/v1/senai/locadora/filme/:id', async function(req, res) {
 
+    // Captura o ID enviado na URL
     let id = req.params.id
     
+    // Chama a controller para buscar o filme
     let result = await controllerFilme.buscarFilme(id)
 
+    // Define status HTTP
     res.status(result.status_code)
+
+    // Retorna o resultado
     res.json(result)
     
 })
 
 
-// serve para inicar a API para receber requisiçõess
+// ======================== ENDPOINT: UPDATE ========================
+
+// Endpoint para atualizar um filme 
+// OBS: Está apenas declarado, sem função callback
+app.put('/v1/senai/locadora/filme/:id', bodyParserJSON, async function(req, res) {
+
+    // Captura o Content-Type enviado no header da requisição
+    // Exemplo: application/json
+    let contentType = req.headers['content-type']
+
+    // Captura o ID que vem na URL (parâmetro de rota)
+    // Exemplo: /filme/10 → id = 10
+    let id = req.params.id
+
+    // Captura os dados enviados no corpo da requisição (body)
+    // Esses dados geralmente vêm em formato JSON
+    let dados = req.body
+
+    // Chama a função da controller responsável por atualizar o filme
+    // Envia:
+    // - dados atualizados (body)
+    // - id do registro (parâmetro da rota)
+    // - content-type (validação)
+    // OBS: a ordem dos parâmetros precisa ser igual à da função na controller
+    let result = await controllerFilme.atualizarFilme(dados, id, contentType)
+
+    // Define o status HTTP da resposta (ex: 200, 400, 500)
+    res.status(result.status_code)
+
+    // Retorna a resposta em formato JSON para o cliente
+    res.json(result)
+})
+
+
+// ======================== SERVER ========================
+
+// Inicializa o servidor na porta 8080
+// A API ficará disponível em: http://localhost:8080
 app.listen(8080, function(){
+
+    // Mensagem exibida no console quando o servidor inicia
     console.log('arquivo pronto')
 })
