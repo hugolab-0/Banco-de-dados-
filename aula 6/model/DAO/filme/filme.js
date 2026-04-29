@@ -69,7 +69,7 @@ const updateFilme = async function(filme){
         valor = '${filme.valor}', 
         capa = '${filme.capa}'
 
-   where id = '${filme.id}';` // atualiza sempre o ID 
+        where id = '${filme.id}';` // atualiza sempre o ID 
 
         // Executa o SQL no banco
         let result = await knexConex.raw(sql)
@@ -143,7 +143,22 @@ const selectByIdFilme = async function(id){
 // Função para deletar um filme pelo ID (ainda não implementada)
 const deleteFilme = async function(id){
 
-    // Função vazia (sem implementação)
+    try {
+    let sql =  `delete from tbl_filme
+    where id= ${id};`
+
+    let result = await knexConex.raw(sql)
+        if(result) {
+            return true 
+        }else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+
+
+   
 }
 
 

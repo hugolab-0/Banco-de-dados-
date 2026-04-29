@@ -180,6 +180,36 @@ const listaFilme = async function() {
     
 }
 
+const deletarFilme = async function(id) {
+      // Clona as mensagens padrão
+      let message = JSON.parse(JSON.stringify(config_message))
+
+      try {
+
+        let resultValidarID= await buscarFilme(id)
+
+        if(resultValidarID.status) {
+
+            let result = await filmeDAO.deleteFilme(id)
+
+            if(result) {
+                message.DEFAULT_MESSAGE.status = message.SUCESS_UPDATE_ITEM.status
+                message.DEFAULT_MESSAGE.status_code = message.SUCESS_UPDATE_ITEM.status_code
+                message.DEFAULT_MESSAGE.message = message.SUCESS_UPDATE_ITEM.message
+
+                return message.DEFAULT_MESSAGE
+            }else {
+                return message.ERROR_BAD_REQUEST
+            }
+
+        }else {
+            return resultBuscarId
+        }
+      } catch (error) {
+        
+      }
+    
+}
 
 // ======================== SELECT BY ID ========================
 // Função para buscar um filme específico pelo ID
@@ -230,6 +260,7 @@ const buscarFilme = async function(id) {
     }
     
 }
+
 
 
 // ======================== VALIDAÇÃO ========================
@@ -293,5 +324,6 @@ module.exports = {
     inserirNovoFilme,
     buscarFilme,
     listaFilme,
-    atualizarFilme
+    atualizarFilme,
+    deletarFilme
 }
