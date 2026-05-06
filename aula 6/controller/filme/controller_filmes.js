@@ -45,11 +45,15 @@ const inserirNovoFilme = async function(filme, contentType) {
                 // Se passou na validação, envia os dados para o DAO inserir no banco
                 let result = await filmeDAO.insertFilme(filme)
 
+                
+
                 // Se o DAO retornou sucesso
                 if(result) { // 201 - criado com sucesso
+                    filme.id = id
                     message.DEFAULT_MESSAGE.status = message.SUCESS_CREATED_ITEM.status
                     message.DEFAULT_MESSAGE.status_code = message.SUCESS_CREATED_ITEM.status_code
                     message.DEFAULT_MESSAGE.message = message.SUCESS_CREATED_ITEM.message
+                    message.DEFAULT_MESSAGE.response = filme
                 }
                 else{ 
                     // Erro ao inserir no banco (camada model)
@@ -193,9 +197,9 @@ const deletarFilme = async function(id) {
             let result = await filmeDAO.deleteFilme(id)
 
             if(result) {
-                message.DEFAULT_MESSAGE.status = message.SUCESS_UPDATE_ITEM.status
-                message.DEFAULT_MESSAGE.status_code = message.SUCESS_UPDATE_ITEM.status_code
-                message.DEFAULT_MESSAGE.message = message.SUCESS_UPDATE_ITEM.message
+                message.DEFAULT_MESSAGE.status = message.SUCESS_DELETE_ITEM.status
+                message.DEFAULT_MESSAGE.status_code = message.SUCESS_DELETE_ITEM.status_code
+                message.DEFAULT_MESSAGE.message = message.SUCESS_DELETE_ITEM.message
 
                 return message.DEFAULT_MESSAGE
             }else {
@@ -203,10 +207,10 @@ const deletarFilme = async function(id) {
             }
 
         }else {
-            return resultBuscarId
+            return resultValidarID
         }
       } catch (error) {
-        
+        return false
       }
     
 }

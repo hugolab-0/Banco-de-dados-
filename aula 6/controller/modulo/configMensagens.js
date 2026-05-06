@@ -96,6 +96,12 @@ const SUCESS_UPDATE_ITEM = {
     message: 'registro atualizado com sucesso!'
 }
 
+const SUCESS_DELETE_ITEM = {
+    status: true, 
+    status_code: 200, 
+    message: 'Item excluido com sucesso!'
+} 
+
 
 // ======================== EXPORTAÇÃO ========================
 // Exporta todos os objetos para serem utilizados em outros arquivos,
@@ -109,6 +115,7 @@ module.exports = {
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_NOT_FOUND,
     SUCESS_RESPONSE,
-    SUCESS_UPDATE_ITEM
+    SUCESS_UPDATE_ITEM,
+    SUCESS_DELETE_ITEM
 
 }

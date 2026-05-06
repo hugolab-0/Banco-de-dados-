@@ -134,6 +134,17 @@ app.put('/v1/senai/locadora/filme/:id', bodyParserJSON, async function(req, res)
 })
 
 
+app.delete('/v1/senai/locadora/lista/filme/:id', async function(req, res) {
+    let id = req.params.id
+
+    let result = await controllerFilme.deletarFilme(id)
+
+        res.status(result.status_code)
+        res.json(result)
+})
+
+
+
 // ======================== SERVER ========================
 
 // Inicializa o servidor na porta 8080
